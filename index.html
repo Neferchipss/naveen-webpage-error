@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>404 – Find your 0 | Canva</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@500;600;800&display=swap">
+<style>
+:root{color-scheme:light;--p:#7d2ae8;--h:clamp(470px,60vh,560px);--F:calc(var(--h)*.6);--sw:calc(var(--F)*.48);--sh:calc(var(--F)*.74);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#f6f6fb;font-family:Poppins,system-ui,sans-serif;color:#1f1f3a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;overflow:hidden;user-select:none}
+.logo{font:400 38px Pacifico,cursive;background:linear-gradient(120deg,#00c4cc,#7d2ae8 70%);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;animation:fade .8s both}
+.wrap{position:relative;width:min(1040px,calc(100vw - 240px))}
+.board{position:relative;height:var(--h);background:#fff;border-radius:28px;box-shadow:0 1px 2px rgba(30,20,70,.05),0 24px 60px -18px rgba(70,40,150,.18);display:flex;flex-direction:column;align-items:center;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.row{display:flex;align-items:center;justify-content:center;gap:calc(var(--F)*.03);height:calc(100% - 140px);margin-top:10px}
+.d{font:800 var(--F)/.8 Poppins;background:linear-gradient(170deg,#9147ff,#6a1fd1);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 10px 18px rgba(125,42,232,.22));padding-bottom:.02em}
+.d.hop{animation:hop .7s cubic-bezier(.3,1.6,.5,1)}
+.slot{position:relative;width:var(--sw);height:var(--sh);z-index:3}
+.slot::before{content:"";position:absolute;inset:0;border-radius:50%;background:rgba(125,42,232,.045);transition:.3s}
+.slot svg.ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transition:.5s cubic-bezier(.3,.9,.3,1);transform-origin:center}
+.ring ellipse{fill:none;stroke:var(--p);stroke-width:5;stroke-linecap:round;stroke-dasharray:.1 14;opacity:.55;vector-effect:non-scaling-stroke;animation:march 2s linear infinite}
+.plus{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;opacity:.4;transition:.4s}
+.plus::before,.plus::after{content:"";position:absolute;background:var(--p);border-radius:2px}
+.plus::before{left:11px;top:0;width:4px;height:26px}.plus::after{top:11px;left:0;height:4px;width:26px}
+.slot.hot::before{background:rgba(125,42,232,.12);transform:scale(1.05)}
+.slot.hot svg.ring{transform:scale(1.04);filter:drop-shadow(0 0 10px rgba(125,42,232,.5))}
+.slot.hot .ring ellipse{opacity:1;stroke-dasharray:.1 9}
+.slot.hot .plus{opacity:.9;transform:rotate(90deg) scale(1.25)}
+.slot.done::before{opacity:0}
+.slot.done svg.ring{opacity:0;transform:scale(1.2)}
+.slot.done .plus{opacity:0;transform:rotate(180deg) scale(0)}
+.spark{position:absolute;width:30px;height:30px;stroke:var(--p);stroke-width:2.4;stroke-linecap:round;fill:none;animation:tw 2.6s ease-in-out infinite;transition:opacity .4s}
+.slot.done .spark{opacity:0}
+canvas{position:absolute;inset:-8% -12%;width:124%;height:116%;pointer-events:none;z-index:4}
+.placed{position:absolute;left:50%;top:50%;width:160px;height:160px;cursor:grab;z-index:3;filter:drop-shadow(0 8px 12px rgba(40,20,80,.2));will-change:transform}
+.placed.drag{cursor:grabbing;filter:drop-shadow(0 16px 20px rgba(40,20,80,.26))}
+.placed svg{width:100%;height:100%;pointer-events:none;overflow:visible}
+.ctl{position:absolute;top:18px;left:50%;transform:translate(-50%,-8px);display:flex;gap:14px;align-items:center;background:#fff;border-radius:40px;padding:8px 10px 8px 18px;box-shadow:0 6px 24px rgba(40,20,100,.14);opacity:0;pointer-events:none;transition:.3s;z-index:6;font-size:11px;color:#6b6b88}
+.ctl.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.ctl label{display:flex;align-items:center;gap:8px;font-weight:500}
+input[type=range]{width:96px;accent-color:var(--p)}
+.ctl button{width:32px;height:32px;border:0;border-radius:50%;cursor:pointer;font-size:14px;background:#f1f1f8;color:#555;transition:.2s}
+.ctl #ok{background:var(--p);color:#fff}.ctl button:hover{transform:scale(1.1)}
+.msg{position:absolute;bottom:30px;left:0;right:0;text-align:center;transition:.6s}
+.msg h1{margin:0;font-size:25px;font-weight:600;letter-spacing:-.01em}
+.msg p{margin:6px 0 0;color:#767691;font-size:16px;font-weight:500}
+.ok{opacity:0;transform:translateY(14px);pointer-events:none}
+.ok h1{color:var(--p);font-weight:800;letter-spacing:.04em;font-size:26px}
+.ok a{display:inline-block;margin-top:16px;padding:12px 30px;border-radius:12px;background:var(--p);color:#fff;font-weight:600;font-size:13px;letter-spacing:.1em;text-decoration:none;box-shadow:0 8px 20px rgba(125,42,232,.35);transition:.25s}
+.ok a.alt{background:#f1e9ff;color:var(--p);box-shadow:none;margin-left:10px}
+.ok a.alt:hover{background:#e7d8ff;box-shadow:none}
+.ok a:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(125,42,232,.45)}
+.fixed .m1{opacity:0;transform:translateY(-10px)}
+.fixed .ok{opacity:1;transform:none;pointer-events:auto}
+.tools{position:absolute;left:-72px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;padding:8px;background:#fff;border-radius:18px;box-shadow:0 8px 28px rgba(40,20,100,.13);z-index:7;transition:.5s;animation:fade 1s .3s both}
+.tools button{position:relative;width:44px;height:44px;border:0;border-radius:12px;background:transparent;cursor:pointer;color:#4a4a68;transition:.2s;display:grid;place-items:center}
+.tools button:hover{background:#f2ecff;color:var(--p)}
+.tools button.on{background:var(--p);color:#fff;box-shadow:0 6px 14px rgba(125,42,232,.4)}
+.tools svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tools i{position:absolute;right:6px;bottom:6px;width:8px;height:8px;border-radius:50%;border:1.5px solid #fff}
+.tools button::after{content:attr(data-tip);position:absolute;left:56px;top:50%;transform:translateY(-50%) translateX(-4px);background:#1f1f3a;color:#fff;font-size:11px;padding:5px 9px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s}
+.tools button:hover::after{opacity:1;transform:translateY(-50%)}
+.fixed ~ .tools,.wrap.fixed .tools{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(-10px)}
+.tray{display:flex;gap:8px;padding:10px 14px;background:#fff;border-radius:24px;box-shadow:0 8px 28px rgba(40,20,100,.1);animation:rise 1s .2s cubic-bezier(.2,.8,.2,1) both;transition:.5s}
+.tray.off{opacity:.35;pointer-events:none;transform:translateY(8px)}
+.item{width:72px;height:72px;border:0;background:transparent;border-radius:16px;padding:8px;cursor:grab;transition:.25s cubic-bezier(.3,1.5,.5,1);touch-action:none}
+.item svg{width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(40,20,80,.15))}
+.item:hover{background:#f6f1ff;transform:translateY(-6px) rotate(-4deg) scale(1.08)}
+.item.used{opacity:.3}
+.ghost{position:fixed;width:112px;height:112px;margin:-56px 0 0 -56px;z-index:99;pointer-events:none;filter:drop-shadow(0 18px 20px rgba(40,20,80,.3));transform:rotate(-6deg) scale(1.06)}
+.ghost svg{width:100%;height:100%;overflow:visible}
+.p{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;z-index:8;pointer-events:none}
+@keyframes march{to{stroke-dashoffset:-28}}
+@keyframes tw{0%,100%{opacity:.25;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(12deg)}}
+@keyframes hop{0%,100%{transform:none}40%{transform:translateY(-18px) scale(1.04)}}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+@keyframes fade{from{opacity:0}}
+</style></head><body>
+<div class="logo">Canva</div>
+<div class="wrap" id="wrap">
+ <div class="tools" id="tools">
+  <button data-tool="pencil" data-tip="Pencil"><svg viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5a2 2 0 013 3L8 19z"/><path d="M14 7l3 3"/></svg></button>
+  <button data-tool="brush" data-tip="Brush · Marker"><svg viewBox="0 0 24 24"><path d="M18.5 3.5a2.1 2.1 0 013 3L13 15l-3-3z"/><path d="M9.5 13c-2.5 0-4 1.5-4 4 0 1.5-1 2.5-2.500 3 3.500.5 7 .5 8-2 .7-1.600 0-3-1.500-5"/></svg><i id="dot" style="background:#7d2ae8"></i></button>
+  <button data-tool="eraser" data-tip="Eraser"><svg viewBox="0 0 24 24"><path d="M16.2 3.8l4 4a2 2 0 010 2.800L10 20.800H6l-2.400-2.400a2 2 0 010-2.800l9.800-11.800a2 2 0 012.800 0z"/><path d="M9 20.800h11"/></svg></button>
+ </div>
+ <section class="board" id="board">
+  <div class="ctl" id="ctl"><label>Rotate<input type="range" id="rot" min="-180" max="180" value="0"></label><label>Size<input type="range" id="siz" min="30" max="220" value="70"></label><button id="ok" title="This is my 0">✓</button><button id="rm" title="Remove">✕</button></div>
+  <div class="row">
+   <span class="d" id="d1">4</span>
+   <div class="slot" id="slot">
+    <svg class="ring" viewBox="0 0 100 100" preserveAspectRatio="none"><ellipse cx="50" cy="50" rx="49" ry="49"/></svg>
+    <div class="plus"></div>
+    <svg class="spark" style="left:-34px;top:-8px" viewBox="0 0 24 24"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg>
+    <svg class="spark" style="right:-30px;top:10%;animation-delay:.9s;width:22px;height:22px" viewBox="0 0 24 24"><path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l3 3M16 16l3 3"/></svg>
+    <svg class="spark" style="right:-22px;bottom:2%;animation-delay:1.6s;width:26px;height:26px" viewBox="0 0 24 24"><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/></svg>
+    <svg class="spark" style="left:-26px;bottom:14%;animation-delay:.4s;width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 2v7M12 15v7M2 12h7M15 12h7"/></svg>
+    <canvas id="cv" width="624" height="900"></canvas>
+   </div>
+   <span class="d" id="d2">4</span>
+  </div>
+  <div class="msg m1"><h1>Looks like this page is missing.</h1><p>Find your 0 and create your way back.</p></div>
+  <div class="msg ok"><h1>0 FOUND. ERROR FIXED.</h1><p>Nice. You designed your way back.</p><a href="https://www.canva.com" target="_blank" rel="noopener">BACK TO CANVA</a><a href="#" class="alt" id="redo">TRY ANOTHER 0</a></div>
+ </section>
+</div>
+<nav class="tray" id="tray"></nav>
+<script>
+const $=s=>document.querySelector(s),slot=$('#slot'),cv=$('#cv'),ctx=cv.getContext('2d'),ctl=$('#ctl');
+const OBJ=[
+['Donut','<circle cx="50" cy="50" r="28" fill="none" stroke="#e7a65a" stroke-width="34"/><circle cx="50" cy="50" r="28" fill="none" stroke="#ff7eb0" stroke-width="24"/><g stroke-width="3" stroke-linecap="round"><path d="M30 28l5 3" stroke="#fff"/><path d="M62 24l4 4" stroke="#ffd93d"/><path d="M76 46l5 1" stroke="#fff"/><path d="M70 74l4-3" stroke="#4cc9d3"/><path d="M40 78l-3-4" stroke="#ffd93d"/><path d="M24 58l-5 1" stroke="#fff"/></g>'],
+['Fried egg','<path d="M50 8C70 4 94 20 92 46 90 70 78 94 52 92 26 92 8 78 10 52 12 28 28 12 50 8z" fill="#fff" stroke="#e6dfd0" stroke-width="2.5"/><circle cx="50" cy="50" r="21" fill="#ffb41f"/><ellipse cx="43" cy="42" rx="6" ry="4" fill="#ffe08a"/>'],
+['CD','<circle cx="50" cy="50" r="46" fill="#e8eefb" stroke="#c3cde6" stroke-width="2"/><g fill="none" stroke-width="7"><circle cx="50" cy="50" r="31" stroke="#ff8ad4" stroke-dasharray="40 155"/><circle cx="50" cy="50" r="31" stroke="#6ad4dd" stroke-dasharray="40 155" stroke-dashoffset="-80"/><circle cx="50" cy="50" r="31" stroke="#ffd93d" stroke-dasharray="30 165" stroke-dashoffset="-150"/></g><circle cx="50" cy="50" r="13" fill="#fff" stroke="#c3cde6" stroke-width="2"/>'],
+['Mirror','<circle cx="50" cy="38" r="31" fill="#d9f0fb" stroke="#e0a93f" stroke-width="7"/><path d="M34 30a18 18 0 0114-12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="45" y="68" width="10" height="27" rx="5" fill="#e0a93f"/>'],
+['Rope','<circle cx="50" cy="50" r="33" fill="none" stroke="#b98445" stroke-width="13"/><circle cx="50" cy="50" r="33" fill="none" stroke="#e3be84" stroke-width="13" stroke-dasharray="6 7"/>'],
+['Wreath','<circle cx="50" cy="50" r="34" fill="none" stroke="#3b9a58" stroke-width="18" stroke-dasharray="13 3"/><circle cx="50" cy="50" r="34" fill="none" stroke="#7ad08f" stroke-width="8" stroke-dasharray="5 9"/><g fill="#ff4d6d"><circle cx="50" cy="16" r="4"/><circle cx="78" cy="27" r="4"/><circle cx="22" cy="74" r="4"/><circle cx="74" cy="79" r="4"/></g>'],
+['Bagel','<circle cx="50" cy="50" r="28" fill="none" stroke="#d8a05a" stroke-width="34"/><circle cx="50" cy="50" r="28" fill="none" stroke="#ebc387" stroke-width="22"/><g fill="#fff4d6"><ellipse cx="30" cy="30" rx="3" ry="1.600" transform="rotate(30 30 30)"/><ellipse cx="66" cy="26" rx="3" ry="1.600" transform="rotate(-40 66 26)"/><ellipse cx="78" cy="56" rx="3" ry="1.600"/><ellipse cx="42" cy="78" rx="3" ry="1.600" transform="rotate(60 42 78)"/><ellipse cx="22" cy="54" rx="3" ry="1.600" transform="rotate(10 22 54)"/></g>'],
+['Banana','<path d="M16 28C14 66 46 94 88 72c4-2 3-7-2-6C58 76 34 62 33 24z" fill="#ffd93d" stroke="#d6aa14" stroke-width="3" stroke-linejoin="round"/><path d="M16 28l17-4" stroke="#6b4a1e" stroke-width="5" stroke-linecap="round"/>'],
+['Tire','<circle cx="50" cy="50" r="32" fill="none" stroke="#2e2e42" stroke-width="24"/><circle cx="50" cy="50" r="43" fill="none" stroke="#6a6a85" stroke-width="2" stroke-dasharray="4 3"/><circle cx="50" cy="50" r="19" fill="none" stroke="#aab1c3" stroke-width="4"/>'],
+['Life ring','<circle cx="50" cy="50" r="32" fill="none" stroke="#f3f4fa" stroke-width="24"/><circle cx="50" cy="50" r="32" fill="none" stroke="#ff5a5f" stroke-width="24" stroke-dasharray="25.1 25.1"/><circle cx="50" cy="50" r="44" fill="none" stroke="#d3d7e6" stroke-width="2"/><circle cx="50" cy="50" r="20" fill="none" stroke="#d3d7e6" stroke-width="2"/>']
+];
+const svg=i=>`<svg viewBox="0 0 100 100">${OBJ[i][1]}</svg>`;
+const tray=$('#tray');
+OBJ.forEach((o,i)=>{const b=document.createElement('button');b.className='item';b.title=o[0];b.dataset.i=i;b.innerHTML=svg(i);tray.appendChild(b)});
+
+let done=false,mode=null,styleIdx=0,placed=null;const BASE=160;
+const STY=[{n:'Marker',c:'#7d2ae8',w:20,g:0},{n:'Ink',c:'#00b8c4',w:12,g:14},{n:'Sunset',c:'#ff5ca8',w:18,g:0}];
+const slotC=()=>{const r=slot.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2,w:r.width,h:r.height,r}};
+const inSlot=(x,y,pad=44)=>{const r=slot.getBoundingClientRect();return x>r.left-pad&&x<r.right+pad&&y>r.top-pad&&y<r.bottom+pad};
+
+/* ---------- drag from tray ---------- */
+tray.addEventListener('pointerdown',e=>{
+ const it=e.target.closest('.item');if(!it||done)return;e.preventDefault();
+ const i=+it.dataset.i,g=document.createElement('div');g.className='ghost';g.innerHTML=svg(i);document.body.appendChild(g);
+ const mv=ev=>{g.style.left=ev.clientX+'px';g.style.top=ev.clientY+'px';slot.classList.toggle('hot',inSlot(ev.clientX,ev.clientY))};
+ mv(e);
+ const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);
+  const hit=inSlot(ev.clientX,ev.clientY);slot.classList.remove('hot');
+  if(hit){g.remove();addPlaced(i,ev.clientX,ev.clientY)}
+  else{const r=it.getBoundingClientRect();g.style.transition='.4s cubic-bezier(.3,1.3,.5,1)';g.style.left=r.left+r.width/2+'px';g.style.top=r.top+r.height/2+'px';g.style.opacity='0';setTimeout(()=>g.remove(),400)}};
+ addEventListener('pointermove',mv);addEventListener('pointerup',up);
+});
+
+/* ---------- placed object ---------- */
+function addPlaced(i,cx,cy){
+ if(placed)removePlaced();
+ const c=slotC(),el=document.createElement('div');el.className='placed';el.innerHTML=svg(i);slot.appendChild(el);
+ placed={el,i,x:cx-c.x,y:cy-c.y,rot:0,sc:Math.round(c.w*.7/BASE*100)/100};
+ $('#rot').value=0;$('#siz').value=Math.round(placed.sc*100);
+ el.style.transition='transform .35s cubic-bezier(.3,1.5,.5,1)';apply();setTimeout(()=>el.style.transition='',380);
+ tray.querySelectorAll('.item').forEach(b=>b.classList.toggle('used',+b.dataset.i===i));
+ ctl.classList.add('on');
+ el.addEventListener('pointerdown',ev=>{if(mode||done)return;ev.preventDefault();el.classList.add('drag');
+  const sx=ev.clientX,sy=ev.clientY,ox=placed.x,oy=placed.y,c=slotC();
+  const mv=m=>{placed.x=Math.max(-c.w*1.6,Math.min(c.w*1.6,ox+m.clientX-sx));placed.y=Math.max(-c.h*.7,Math.min(c.h*.7,oy+m.clientY-sy));apply()};
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);el.classList.remove('drag');check()};
+  addEventListener('pointermove',mv);addEventListener('pointerup',up)});
+ el.addEventListener('wheel',ev=>{if(done)return;ev.preventDefault();placed.rot+=ev.deltaY*.25;$('#rot').value=((placed.rot+180)%360+360)%360-180;apply()},{passive:false});
+ setTimeout(check,400);
+}
+function apply(){placed.el.style.transform=`translate(-50%,-50%) translate(${placed.x}px,${placed.y}px) rotate(${placed.rot}deg) scale(${placed.sc})`}
+function removePlaced(){placed.el.remove();placed=null;ctl.classList.remove('on');tray.querySelectorAll('.item').forEach(b=>b.classList.remove('used'))}
+$('#rot').oninput=e=>{placed.rot=+e.target.value;apply()};
+$('#siz').oninput=e=>{placed.sc=e.target.value/100;apply()};
+$('#rot').onchange=$('#siz').onchange=()=>check();
+$('#rm').onclick=()=>placed&&removePlaced();
+$('#ok').onclick=()=>placed&&success('placed');
+function check(){
+ if(!placed||done)return;const c=slotC(),D=BASE*placed.sc;
+ if(Math.abs(placed.x)<c.w*.2&&Math.abs(placed.y)<c.h*.2&&D>c.w*.85&&D<c.h*1.3)success('placed');
+}
+
+/* ---------- tools & drawing ---------- */
+document.querySelectorAll('.tools button').forEach(b=>b.onclick=()=>{
+ if(done)return;const t=b.dataset.tool;
+ if(mode===t&&t==='brush'){styleIdx=(styleIdx+1)%STY.length;b.dataset.tip='Brush · '+STY[styleIdx].n;$('#dot').style.background=STY[styleIdx].c}
+ else mode=mode===t?null:t;
+ document.querySelectorAll('.tools button').forEach(x=>x.classList.toggle('on',x.dataset.tool===mode));
+ cv.style.pointerEvents=mode?'auto':'none';cv.style.cursor=mode==='eraser'?'cell':'crosshair';
+});
+let pts=null,last=null;
+const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height}};
+cv.addEventListener('pointerdown',e=>{if(!mode||done)return;cv.setPointerCapture(e.pointerId);pts=[last=pos(e)];seg(last,last)});
+cv.addEventListener('pointermove',e=>{if(!pts)return;const p=pos(e);seg(last,p);last=p;pts.push(p)});
+cv.addEventListener('pointerup',()=>{if(!pts)return;const p=pts;pts=null;if(mode!=='eraser'&&loopOK(p))success('drawn')});
+function seg(a,b){
+ ctx.save();ctx.lineCap=ctx.lineJoin='round';
+ if(mode==='eraser'){ctx.globalCompositeOperation='destination-out';ctx.lineWidth=40}
+ else if(mode==='pencil'){ctx.strokeStyle='#2a2a4a';ctx.lineWidth=7}
+ else{const s=STY[styleIdx];ctx.strokeStyle=s.c;ctx.lineWidth=s.w;if(s.g){ctx.shadowColor=s.c;ctx.shadowBlur=s.g}}
+ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x+.01,b.y);ctx.stroke();ctx.restore();
+}
+function loopOK(p){
+ if(p.length<25)return false;
+ let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;p.forEach(q=>{x0=Math.min(x0,q.x);x1=Math.max(x1,q.x);y0=Math.min(y0,q.y);y1=Math.max(y1,q.y)});
+ const w=x1-x0,h=y1-y0,sw=cv.width*.807,sh=cv.height*.862,cx=(x0+x1)/2,cy=(y0+y1)/2;
+ if(w<sw*.5||h<sh*.5||w>sw*1.4||h>sh*1.4)return false;
+ if(Math.abs(cx-cv.width/2)>sw*.32||Math.abs(cy-cv.height/2)>sh*.32)return false;
+ const f=p[0],l=p[p.length-1];if(Math.hypot(f.x-l.x,f.y-l.y)>Math.max(w,h)*.32)return false;
+ let sum=0,pa=Math.atan2(p[0].y-cy,p[0].x-cx);
+ for(const q of p){const a=Math.atan2(q.y-cy,q.x-cx);let d=a-pa;if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;sum+=d;pa=a}
+ return Math.abs(sum)>1.75*Math.PI;
+}
+
+/* ---------- success ---------- */
+function success(kind){
+ if(done)return;done=true;mode=null;cv.style.pointerEvents='none';ctl.classList.remove('on');
+ tray.classList.add('off');$('#wrap').classList.add('fixed');slot.classList.add('done');
+ if(kind==='placed'){const c=slotC(),el=placed.el;el.style.transition='transform .8s cubic-bezier(.3,1.4,.4,1)';placed.x=0;placed.y=0;
+  placed.sc=Math.min(Math.max(placed.sc,c.w*1.02/BASE),c.h*.98/BASE);apply();el.style.cursor='default'}
+ else{cv.animate([{transform:'scale(1)'},{transform:'scale(1.07)'},{transform:'scale(1)'}],{duration:700,easing:'ease-out'})}
+ ['#d1','#d2'].forEach((s,i)=>setTimeout(()=>{$(s).classList.add('hop')},250+i*90));
+ const cols=['#7d2ae8','#00c4cc','#ff5ca8','#ffd93d','#9147ff'];
+ for(let k=0;k<26;k++){const p=document.createElement('div'),a=Math.random()*6.283,d=120+Math.random()*170;p.className='p';p.style.background=cols[k%5];if(k%3==0)p.style.borderRadius='2px';slot.appendChild(p);
+  p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d*.9}px) scale(0) rotate(200deg)`,opacity:0}],{duration:800+Math.random()*500,easing:'cubic-bezier(.15,.8,.3,1)',delay:150}).onfinish=()=>p.remove()}
+}
+$('#redo').onclick=e=>{e.preventDefault();
+ const old=placed&&placed.el;placed=null;if(old){old.animate([{opacity:1},{opacity:0}],{duration:200}).onfinish=()=>old.remove()}
+ done=false;mode=null;ctx.clearRect(0,0,cv.width,cv.height);cv.style.pointerEvents='none';
+ $('#wrap').classList.remove('fixed');slot.classList.remove('done');tray.classList.remove('off');
+ tray.querySelectorAll('.item').forEach(b=>b.classList.remove('used'));
+ document.querySelectorAll('.tools button').forEach(x=>x.classList.remove('on'));
+ ['#d1','#d2'].forEach(s=>$(s).classList.remove('hop'))};
+</script></body></html>
